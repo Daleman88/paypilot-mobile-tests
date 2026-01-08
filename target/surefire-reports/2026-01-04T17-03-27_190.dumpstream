@@ -1,0 +1,5 @@
+# Created at 2026-01-04T17:03:27.506
+Boot Manifest-JAR contains absolute paths in classpath 'D:\QA\paypilot-mobile-tests\paypilot-mobile-tests\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+'other' has different root
+

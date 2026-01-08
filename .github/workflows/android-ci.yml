@@ -1,0 +1,67 @@
+# El nombre de nuestro flujo de trabajo. Aparecerá en la pestaña "Actions" de GitHub.
+name: Android CI - Run Appium Tests
+
+# Define CUÁNDO se debe ejecutar este flujo de trabajo.
+on:
+  # Se ejecutará cada vez que alguien haga 'push' a la rama 'main'.
+  push:
+    branches: [ "main" ]
+  # También se puede activar manualmente desde la pestaña Actions de GitHub.
+  workflow_dispatch:
+
+# Define los "trabajos" (jobs) que se van a realizar.
+jobs:
+  run-tests:
+    # Especificamos el tipo de máquina virtual. 'macos-latest' es la mejor opción
+    # para emuladores de Android por su soporte de aceleración de hardware.
+    runs-on: macos-latest
+
+    # 'steps' es la secuencia de acciones que se ejecutarán en la máquina virtual.
+    steps:
+
+      # 1. Descargar nuestro código del repositorio a la máquina virtual.
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      # 2. Configurar el entorno de Java (necesitamos JDK 11).
+      - name: Set up JDK 11
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+      # 3. Cachear las dependencias de Maven (¡Optimización de nivel Senior!)
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # 4. Iniciar el servidor Appium.
+      - name: Start Appium Server
+        run: |
+          npm install -g appium
+          appium &
+
+      # 5. Iniciar el Emulador de Android.
+      - name: Run Android Emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          script: echo "Emulator started."
+
+      # 6. Ejecutar las pruebas con Maven.
+      - name: Run Maven Tests
+        run: mvn test
+        continue-on-error: true
+
+      # 7. Subir los Artefactos de Prueba.
+      - name: Upload Test Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: reports/

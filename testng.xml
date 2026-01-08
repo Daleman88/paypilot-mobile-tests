@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="PayPilot Mobile Test Suite">
+    <!-- Aquí se registra el listener para que TestNG lo use durante la ejecución -->
+    <listeners>
+        <listener class-name="com.paypilot.qa.listeners.TestListener" />
+    </listeners>
+
+    <!-- Define el conjunto de pruebas a ejecutar -->
+    <test name="E2E Payment Test">
+        <classes>
+            <class name="com.paypilot.qa.tests.PaymentTest" />
+        </classes>
+    </test>
+</suite>
