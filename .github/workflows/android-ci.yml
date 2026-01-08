@@ -3,23 +3,18 @@ name: Android CI - Run Appium Tests
 
 # Define CUÁNDO se debe ejecutar este flujo de trabajo.
 on:
-  # Se ejecutará cada vez que alguien haga 'push' a la rama 'main'.
   push:
     branches: [ "main" ]
-  # También se puede activar manualmente desde la pestaña Actions de GitHub.
   workflow_dispatch:
 
 # Define los "trabajos" (jobs) que se van a realizar.
 jobs:
   run-tests:
-    # Especificamos el tipo de máquina virtual. 'macos-latest' es la mejor opción
-    # para emuladores de Android por su soporte de aceleración de hardware.
+    # macOS es necesario para la aceleración de hardware del emulador de Android en GitHub.
     runs-on: macos-latest
 
-    # 'steps' es la secuencia de acciones que se ejecutarán en la máquina virtual.
     steps:
-
-      # 1. Descargar nuestro código del repositorio a la máquina virtual.
+      # 1. Descargar nuestro código del repositorio.
       - name: Check out repository
         uses: actions/checkout@v4
 
@@ -30,7 +25,7 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      # 3. Cachear las dependencias de Maven (¡Optimización de nivel Senior!)
+      # 3. Cachear las dependencias de Maven para ganar velocidad.
       - name: Cache Maven packages
         uses: actions/cache@v4
         with:
@@ -39,28 +34,31 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # 4. Iniciar el servidor Appium.
+      # 4. Iniciar el servidor Appium en segundo plano.
       - name: Start Appium Server
         run: |
           npm install -g appium
           appium &
 
-      # 5. Iniciar el Emulador de Android.
-      - name: Run Android Emulator
+      # 5. Iniciar el Emulador Y ejecutar las pruebas (TODO EN UNO).
+      # Esta acción descarga, configura, arranca el emulador, ejecuta el script y luego limpia.
+      - name: Run Android Emulator and Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 30
           target: google_apis
           arch: x86_64
-          script: echo "Emulator started."
-
-      # 6. Ejecutar las pruebas con Maven.
-      - name: Run Maven Tests
-        run: mvn test
+          # Desactivar animaciones hace que las pruebas sean mucho más estables en CI.
+          disable-animations: true
+          # Opciones para que el emulador corra sin interfaz y de forma eficiente.
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+          # ¡ESTA ES LA CLAVE!: Maven debe ejecutarse AQUÍ dentro mientras el emulador está vivo.
+          script: mvn test
         continue-on-error: true
 
-      # 7. Subir los Artefactos de Prueba.
+      # 6. Subir los Artefactos de Prueba (Reportes y capturas).
       - name: Upload Test Reports
+        if: always() # Queremos el reporte incluso si los tests fallaron.
         uses: actions/upload-artifact@v4
         with:
           name: test-reports
