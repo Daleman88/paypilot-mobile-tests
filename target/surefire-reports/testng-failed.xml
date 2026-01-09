@@ -11,9 +11,7 @@
           <include name="setup"/>
           <include name="teardown"/>
           <include name="resetAppToMainMenu"/>
-          <include name="testInvalidEmailFormat"/>
           <include name="performE2EPaymentTest"/>
-          <include name="testEmptyFields"/>
         </methods>
       </class> <!-- com.paypilot.qa.tests.PaymentTest -->
     </classes>

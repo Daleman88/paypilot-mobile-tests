@@ -1,20 +1,25 @@
 -------------------------------------------------------------------------------
 Test set: TestSuite
 -------------------------------------------------------------------------------
-Tests run: 8, Failures: 1, Errors: 0, Skipped: 7, Time elapsed: 7.236 s <<< FAILURE! -- in TestSuite
-com.paypilot.qa.tests.PaymentTest.setup -- Time elapsed: 5.512 s <<< FAILURE!
-java.lang.RuntimeException: Fallo al configurar el driver de Appium
-	at com.paypilot.qa.basetest.BaseTest.setup(BaseTest.java:54)
+Tests run: 3, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 105.6 s <<< FAILURE! -- in TestSuite
+com.paypilot.qa.tests.PaymentTest.performE2EPaymentTest -- Time elapsed: 19.14 s <<< FAILURE!
+java.lang.AssertionError: FALLO DE HAPPY PATH: La pasarela de pago no se mostró. Causa probable: El bug de la apps que muestra un error de conexión o de hash. expected [true] but found [false]
+	at org.testng.Assert.fail(Assert.java:110)
+	at org.testng.Assert.failNotEquals(Assert.java:1577)
+	at org.testng.Assert.assertTrue(Assert.java:56)
+	at com.paypilot.qa.tests.PaymentTest.performE2EPaymentTest(PaymentTest.java:37)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
 	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
-	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:69)
-	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:361)
-	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:296)
-	at org.testng.internal.invokers.TestMethodWorker.invokeBeforeClassMethods(TestMethodWorker.java:180)
-	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:122)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:969)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
 	at org.testng.TestRunner.privateRun(TestRunner.java:829)
 	at org.testng.TestRunner.run(TestRunner.java:602)
@@ -35,24 +40,4 @@ java.lang.RuntimeException: Fallo al configurar el driver de Appium
 	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
 	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
-Caused by: org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Response code 500. Message: The application at 'D:\QA\paypilot-mobile-tests\apps/PayUDemo.apk' does not exist or is not accessible 
-Host info: host: 'DAYLI-PC', ip: '192.168.1.131'
-Build info: version: '4.39.0', revision: '126f156aee'
-System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '17.0.17'
-Driver info: io.appium.java_client.android.AndroidDriver
-Command: [null, newSession {capabilities=[Capabilities {appium:app: D:\QA\paypilot-mobile-tests..., appium:automationName: UiAutomator2, appium:udid: emulator-5554, platformName: ANDROID}]}]
-Capabilities {appium:app: D:\QA\paypilot-mobile-tests..., appium:automationName: UiAutomator2, appium:udid: emulator-5554, platformName: ANDROID}
-	at org.openqa.selenium.remote.ProtocolHandshake.createSession(ProtocolHandshake.java:114)
-	at org.openqa.selenium.remote.ProtocolHandshake.createSession(ProtocolHandshake.java:75)
-	at org.openqa.selenium.remote.ProtocolHandshake.createSession(ProtocolHandshake.java:61)
-	at io.appium.java_client.remote.AppiumCommandExecutor.createSession(AppiumCommandExecutor.java:178)
-	at io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:243)
-	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:561)
-	at io.appium.java_client.AppiumDriver.startSession(AppiumDriver.java:308)
-	at org.openqa.selenium.remote.RemoteWebDriver.<init>(RemoteWebDriver.java:178)
-	at io.appium.java_client.AppiumDriver.<init>(AppiumDriver.java:98)
-	at io.appium.java_client.AppiumDriver.<init>(AppiumDriver.java:109)
-	at io.appium.java_client.android.AndroidDriver.<init>(AndroidDriver.java:108)
-	at com.paypilot.qa.basetest.BaseTest.setup(BaseTest.java:45)
-	... 30 more
 
